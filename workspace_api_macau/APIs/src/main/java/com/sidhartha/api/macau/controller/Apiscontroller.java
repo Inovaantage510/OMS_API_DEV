@@ -18,8 +18,8 @@ public class Apiscontroller {
     @PostMapping(value = "/rmsapi/outage/notifyoutage", consumes = "application/json")
     public ResponseEntity<Object> v1(@RequestBody Testing modeRequest) {
         
-        System.out.println("Received dateTime: " + modeRequest.getDateTime());
-
+        System.out.println("Received dateTime: " + modeRequest.getDateTime()); 
+        
         if (modeRequest.getDateTime() == null || modeRequest.getDateTime().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Error: dateTime is missing or invalid");
@@ -47,8 +47,8 @@ public class Apiscontroller {
             modeRequest.setStatus(status);
 
           
-            ResponseFormat responseFormat = new ResponseFormat(true, true, null, 0);
-
+            ResponseFormat responseFormat = new ResponseFormat(true, true, null, 0);  
+         
             
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseFormat);
         } catch (Exception e) {
