@@ -1,0 +1,6 @@
+spring.application.name=APIs
+# Increase the maximum HTTP header size (default is 8KB)
+server.tomcat.max-http-header-size=16384 # Example: 16KB
+
+# Enable request validation logging for better traceability
+server.tomcat.accesslog.enabled=true

@@ -1,0 +1,33 @@
+package com.sidhartha.api.macau.entity;
+
+public class Testing {
+
+    private String datetime;
+    private String mode;
+
+    public Testing() {
+        super();
+    }
+
+    public Testing(String datetime, String mode) {
+        super();
+        this.datetime = datetime;
+        this.mode = mode;
+    }
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+}

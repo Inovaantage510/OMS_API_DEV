@@ -1,0 +1,39 @@
+package com.sidhartha.api.macau.entity;
+
+import java.sql.Date;
+
+public class Testing 
+{
+		  private Date datetime; 
+	      private String mode; 
+	      private String status; 
+	      
+		  public Testing() {
+			super();
+			// TODO Auto-generated constructor stub
+		}
+		public Testing(Date datetime, String mode, String status) {
+			super();
+			this.datetime = datetime;
+			this.mode = mode;
+			this.status = status;
+		}
+		public Date getDatetime() {
+				return datetime;
+			}
+			public void setDatetime(Date datetime) {
+				this.datetime = datetime;
+			}
+			public String getMode() {
+				return mode;
+			}
+			public void setMode(String mode) {
+				this.mode = mode;
+			}
+			public String getStatus() {
+				return status;
+			}
+			public void setStatus(String status) {
+				this.status = status;
+			}
+}

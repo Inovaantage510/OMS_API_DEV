@@ -1,0 +1,112 @@
+package com.sidhartha.api.macau.controller;
+
+import com.sidhartha.api.macau.entity.Testing;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+@RestController
+@RequestMapping("/rms")
+public class Apiscontroller {
+
+    @PostMapping(value = "/rmsapi/outage/notifyoutage", consumes = "application/json")
+    public ResponseEntity<Object> v1(@RequestBody Testing modeRequest) {
+        
+        // Debugging: Print the incoming dateTime
+        System.out.println("Received dateTime: " + modeRequest.getDatetime());
+
+        // Validate if dateTime is present and not empty
+        if (modeRequest.getDatetime() == null || modeRequest.getDatetime().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error: dateTime is missing or invalid");
+        }
+
+        try {
+            // Define the date-time format
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+
+            // Get the current date-time
+            LocalDateTime now = LocalDateTime.now();
+            
+            // Parse the provided dateTime
+            LocalDateTime providedDateTime = LocalDateTime.parse(modeRequest.getDatetime(), formatter);
+
+            // Debugging: Print the parsed dateTime
+            System.out.println("Parsed dateTime: " + providedDateTime);
+
+            // Set the status based on the dateTime
+            String status = "active"; // Default to active for today
+            if (providedDateTime.isAfter(now)) {
+                status = "deactive"; // Set to deactive for future dates
+            }
+
+            // Set status to the provided object
+            modeRequest.setStatus(status);
+
+            // Create the response format as required
+            ResponseFormat responseFormat = new ResponseFormat(true, true, null, 0);
+
+            // Return the response
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseFormat);
+        } catch (Exception e) {
+            // Handle any parsing errors or invalid dateTime formats
+            System.err.println("Error during dateTime parsing: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error: Invalid dateTime format. Please use yyyyMMddHHmmss.");
+        }
+    }
+
+    // ResponseFormat class to match the response structure
+    public static class ResponseFormat {
+        private boolean success;
+        private boolean data;
+        private String error;
+        private int dataCount;
+
+        public ResponseFormat(boolean success, boolean data, String error, int dataCount) {
+            this.success = success;
+            this.data = data;
+            this.error = error;
+            this.dataCount = dataCount;
+        }
+
+        // Getters and setters
+        public boolean isSuccess() {
+            return success;
+        }
+
+        public void setSuccess(boolean success) {
+            this.success = success;
+        }
+
+        public boolean isData() {
+            return data;
+        }
+
+        public void setData(boolean data) {
+            this.data = data;
+        }
+
+        public String getError() {
+            return error;
+        }
+
+        public void setError(String error) {
+            this.error = error;
+        }
+
+        public int getDataCount() {
+            return dataCount;
+        }
+
+        public void setDataCount(int dataCount) {
+            this.dataCount = dataCount;
+        }
+    }
+}

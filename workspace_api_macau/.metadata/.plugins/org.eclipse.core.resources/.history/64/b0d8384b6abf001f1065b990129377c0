@@ -1,0 +1,44 @@
+package com.sidhartha.api.macau.controller;
+
+import com.sidhartha.api.macau.entity.Testing;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+@RestController
+@RequestMapping("/rms")
+public class Apiscontroller {
+
+    @PostMapping(value = "/rmsapi/outage/notifyoutage", consumes = "application/json")
+    public ResponseEntity<Testing> v1(@RequestBody Testing modeRequest) {
+
+   
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime previousdate = now.minusDays(1); 
+        String formattedDateTime = now.format(formatter);
+        String previousdateformater = previousdate.format(formatter); 
+        Testing response = new Testing(formattedDateTime, modeRequest.getMode());
+
+        String status1 = "active";  
+        String status2 = "inactive";
+    
+        
+        if(status1 == "active" &&  !formattedDateTime.isEmpty())
+        {
+        	return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+        }
+        else if(status2 == "inactive" && !previousdateformater.isEmpty())
+        {
+        	return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+        }
+		return null;
+     
+    }
+}
